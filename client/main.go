@@ -49,11 +49,11 @@ func dialGrpc() (connection *grpc.ClientConn, returnClient pb.AuctionServiceClie
 func main() {
 	sc = *bufio.NewScanner(os.Stdin)
 
-	generateNode()
+	generateNode() //Generates a UUID and sets as the nodeID
 
-	connection, client, ctx := dialGrpc()
+	connection, client, ctx := dialGrpc() //Creates client connection to the NewAuctionServiceClient
 
-	defer connection.Close()
+	defer connection.Close() //Closes connection when values have been defined.
 
 	for {
 		sc.Scan()
@@ -66,6 +66,7 @@ func main() {
 			log.Fatalln("Result query failed.")
 		}
 
+		//Code for client querying a bid
 		if Outcome.GetStatus() == "ongoing" && s[0] == "bid" && len(s) == 2 {
 			bidAmount, err1 := strconv.ParseInt(s[1], 10, 64)
 			if err1 != nil {
@@ -75,8 +76,9 @@ func main() {
 			if err2 != nil {
 				log.Fatalln("Bid failed.")
 			}
-
 			log.Println(Ack.GetBody())
+
+			//Code for client querying result
 		} else if Outcome.GetStatus() == "ongoing" && s[0] == "result" && len(s) == 1 {
 			if Outcome.GetHighestBid() > 0 {
 				log.Printf("Auction is ongoing. The highest bid is: %v", Outcome.GetHighestBid())
