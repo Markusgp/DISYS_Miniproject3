@@ -1,0 +1,27 @@
+syntax = "proto3";
+package pb;
+option go_package = "/protoc";
+
+message Amount {
+    string nodeId = 1;
+    int64 bid = 2;
+}
+
+message Ack {
+    string body = 1;
+}
+
+message Outcome {
+    string status = 1;
+    int64 highestBid = 2;
+    string highestBidder = 3;
+}
+
+message Void {
+
+}
+
+service AuctionService {
+    rpc Bid(Amount) returns (Ack);
+    rpc Result(Void) returns (Outcome);
+}
