@@ -21,7 +21,6 @@ type Connection struct {
 }
 
 var (
-	connections   = make(map[string]Connection)
 	highestBid    = int64(0)
 	currentWinner string
 	onGoing       = true
